@@ -3,7 +3,7 @@ import smtplib
 import argparse
 import json
 from email.mime.text import MIMEText
-from email.mime.multipart import MimeMultipart
+from email.mime.multipart import MIMEMultipart
 from datetime import datetime
 
 def load_config(config_path):
