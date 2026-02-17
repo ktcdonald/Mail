@@ -16,34 +16,27 @@ jobs:
       with:
         python-version: '3.11'
         
-    - name: 📤 Send Test Email
-      env:
-        GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
-        APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
-        TO_EMAIL: ${{ secrets.TO_EMAIL }}
+    - name: 📤 Send Test Email (Use existing config.json)
       run: |
-        # ✅ 修正1: 生成 config.json（用你現有檔名 DailySender.py）
-        cat > config.json << 'EOF'
-        {
-          "gmail_email": "${{ secrets.GMAIL_EMAIL }}",
-          "app_password": "${{ secrets.APP_PASSWORD }}",
-          "to_email": "${{ secrets.TO_EMAIL }}",
-          "bcc_list": [],
-          "subject": "🧪 GitHub Actions Test - $(date +%Y%m%d-%H%M)",
-          "html_content": "<h2>✅ ktcdonald123 Auto Test Success!</h2><p>From: ktcdonald123@gmail.com<br>Time: $(date)<br>Server: GitHub Actions</p>"
-        }
-        EOF
+        # ✅ 檢查現有 config.json
+        echo "📁 Current files:"
+        ls -la *.json *.py
         
-        # ✅ 修正2: 用正確檔名（你截圖顯示 DailySender.py）
-        python DailySender.py --config config.json
-        
-        echo "✅ Config generated:"
-        cat config.json
+        # ✅ 直接用你已 commit 嘅 config.json
+        if [ -f "config.json" ]; then
+          echo "✅ Found config.json, using it..."
+          cat config.json
+          python DailySender.py --config config.json
+        else
+          echo "❌ config.json not found in repo!"
+          ls -la
+          exit 1
+        fi
         
     - name: 📊 Final Status
       if: always()
       run: |
-        echo "📁 All files:"
+        echo "📁 All files in root:"
         ls -la
-        echo "📧 Config content:"
-        cat config.json || echo "Config not found"
+        echo "📧 config.json content:"
+        cat config.json || echo "No config.json"
