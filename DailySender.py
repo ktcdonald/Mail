@@ -54,7 +54,7 @@ def send_email(config, dry_run=False):
         if key not in config:
             print(f"❌ Missing required config: {key}")
             return False
-    
+    print(config['app_password'],config['gmail_email'])
     msg = MIMEMultipart()
     msg['From'] = config['gmail_email']
     msg['To'] = config['to_email']
