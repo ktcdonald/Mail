@@ -1,4 +1,0 @@
-smtplib
-email
-json
-zipfile
