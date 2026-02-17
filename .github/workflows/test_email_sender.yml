@@ -1,8 +1,9 @@
 name: 🚀 Gmail Test Sender
 
 on:
-  workflow_dispatch:  # 手動觸發
-  
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
 jobs:
   send-test-email:
     runs-on: ubuntu-latest
