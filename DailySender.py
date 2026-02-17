@@ -1,33 +1,55 @@
+#!/usr/bin/env python3
+import smtplib
 import argparse
 import json
+from email.mime.text import MimeText
+from email.mime.multipart import MimeMultipart
 from datetime import datetime
 
 def load_config(config_path):
     with open(config_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
-def dry_run_test(config):
-    """模擬發送，不真發"""
-    print(f"🧪 DRY RUN MODE")
-    print(f"📅 Date: {config['date']} (Day {config['day_num']}/{config['total_day']})")
-    print(f"📧 From: {config['gmail_email']}")
-    print(f"📨 To: {config['to_email']}")
-    print(f"👥 BCC: {len(config['bcc_list'])} recipients")
-    print(f"📄 Subject: {config['subject'][:50]}...")
-    print(f"✅ Batch size: {config['batch_size']}")
-    print(f"🕐 Simulated send time: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-    return True
+def send_email(config, dry_run=False):
+    if dry_run:
+        print("🧪 DRY RUN MODE")
+        print(f"📧 From: {config['gmail_email']}")
+        print(f"📨 To: {config['to_email']}")
+        print(f"👥 BCC: {len(config['bcc_list'])}")
+        print(f"📄 Subject: {config['subject']}")
+        return True
+    
+    # 真實發送
+    msg = MimeMultipart()
+    msg['From'] = config['gmail_email']
+    msg['To'] = config['to_email']
+    msg['Subject'] = config['subject']
+    
+    # HTML 內容
+    html_body = MimeText(config['html_content'], 'html')
+    msg.attach(html_body)
+    
+    try:
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        server.login(config['gmail_email'], config['app_password'])
+        
+        server.sendmail(config['gmail_email'], 
+                       [config['to_email']] + config['bcc_list'],
+                       msg.as_string())
+        server.quit()
+        print("✅ Email sent successfully!")
+        return True
+    except Exception as e:
+        print(f"❌ Send failed: {e}")
+        return False
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--config', required=True, help='Path to config.json')
-    parser.add_argument('--dry-run', action='store_true', help='Test without sending')
+    parser = argparse.ArgumentParser(description="Gmail Batch Sender")
+    parser.add_argument('--config', required=True)
+    parser.add_argument('--dry-run', action='store_true', default=False)
     args = parser.parse_args()
     
     config = load_config(args.config)
-    
-    if args.dry_run:
-        success = dry_run_test(config)
-        print("✅ Test PASSED!")
-    else:
-        print("🚀 Real send mode (implement your SMTP logic)")
+    success = send_email(config, args.dry_run)
+    print(f"{'✅' if success else '❌'} Mission {'completed (dry)' if args.dry_run else 'completed'}!")
