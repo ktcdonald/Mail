@@ -1,0 +1,47 @@
+name: 🧪 Test Email Sender
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # 手動觸發
+
+jobs:
+  test-sender:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Setup Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        
+    - name: 📦 Install dependencies
+      run: |
+        pip install -r requirements.txt
+        
+    - name: 🧪 Create test data
+      run: |
+        mkdir -p test_data
+        echo '${{ toJson(github.event.inputs) }}' > test_data/config.json
+        
+    - name: ✅ Test daily_sender.py (Dry Run)
+      env:
+        GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
+        APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
+        TO_EMAIL: ${{ secrets.TO_EMAIL }}
+      run: |
+        python daily_sender.py --dry-run --config test_data/config.json
+        
+    - name: 📊 Upload test logs
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-logs
+        path: |
+          test_email_log.txt
+          *.log
