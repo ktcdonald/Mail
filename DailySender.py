@@ -20,13 +20,13 @@ def send_email(config, dry_run=False):
         return True
     
     # 真實發送
-    msg = MimeMultipart()
+    msg = MIMEMultipart()
     msg['From'] = config['gmail_email']
     msg['To'] = config['to_email']
     msg['Subject'] = config['subject']
     
     # HTML 內容
-    html_body = MimeText(config['html_content'], 'html')
+    html_body = MIMEText(config['html_content'], 'html')
     msg.attach(html_body)
     
     try:
