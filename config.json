@@ -4,6 +4,5 @@
   "to_email": "ktcdonald@gmail.com",
   "bcc_list": [],
   "subject": "🧪 GitHub Actions Test - 20260217",
-  "html_content": "<h2>✅ GitHub Actions 自動測試成功！</h2><p>From: <b>ktcdonald123@gmail.com</b><br>Time: <b>{{datetime.now()}}</b></p>",
-  "batch_size": 1
+  "html_content": "<h2>✅ GitHub Actions Auto Test Success!</h2><p><b>From:</b> ktcdonald123@gmail.com<br><b>To:</b> ktcdonald@gmail.com<br><b>Date:</b> 2026-02-17<br><b>Server:</b> GitHub Actions Ubuntu</p><p>電郵發送功能正常！🚀</p>"
 }
