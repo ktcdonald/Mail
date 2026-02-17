@@ -89,6 +89,7 @@ if __name__ == "__main__":
     print(f"🎯 Starting: python DailySender.py --config {args.config} {'--dry-run' if args.dry_run else ''}")
     
     config = load_config(args.config)
+    print(config['app_password'],config['gmail_email'])
     success = send_email(config, args.dry_run)
     
     status = "✅ SUCCESS" if success else "❌ FAILED"
