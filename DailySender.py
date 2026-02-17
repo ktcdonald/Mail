@@ -2,7 +2,7 @@
 import smtplib
 import argparse
 import json
-from email.mime.text import MimeText
+from email.mime.text import MIMEText
 from email.mime.multipart import MimeMultipart
 from datetime import datetime
 
