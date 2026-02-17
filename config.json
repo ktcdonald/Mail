@@ -1,0 +1,16 @@
+{
+  "date": "20260217",
+  "day_num": 1,
+  "total_day": 15,
+  "gmail_email": "test@example.com",
+  "app_password": "abcd efgh ijkl mnop",
+  "bcc_list": [
+    "user1@gmail.com",
+    "user2@yahoo.com",
+    "user3@outlook.com"
+  ],
+  "subject": "🧪 Test Email - Day 1/15",
+  "html_content": "<h2>Test Email</h2><p>This is Day <strong>1</strong> of 15. <br> BCC: 3 recipients.</p>",
+  "to_email": "your.email@domain.com",
+  "batch_size": 3
+}
