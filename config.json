@@ -1,16 +1,9 @@
 {
-  "date": "20260217",
-  "day_num": 1,
-  "total_day": 15,
-  "gmail_email": "test@example.com",
-  "app_password": "abcd efgh ijkl mnop",
-  "bcc_list": [
-    "user1@gmail.com",
-    "user2@yahoo.com",
-    "user3@outlook.com"
-  ],
-  "subject": "🧪 Test Email - Day 1/15",
-  "html_content": "<h2>Test Email</h2><p>This is Day <strong>1</strong> of 15. <br> BCC: 3 recipients.</p>",
-  "to_email": "your.email@domain.com",
-  "batch_size": 3
+  "gmail_email": "ktcdonald123@gmail.com",
+  "app_password": "skpyyqdcvceqzzyu",
+  "to_email": "ktcdonald@gmail.com",
+  "bcc_list": [],
+  "subject": "🧪 GitHub Actions Test - 20260217",
+  "html_content": "<h2>✅ GitHub Actions 自動測試成功！</h2><p>From: <b>ktcdonald123@gmail.com</b><br>Time: <b>{{datetime.now()}}</b></p>",
+  "batch_size": 1
 }
