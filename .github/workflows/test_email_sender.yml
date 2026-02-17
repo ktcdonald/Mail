@@ -1,8 +1,7 @@
 name: 🚀 Gmail Test Sender
 
 on:
-  schedule:
-    - cron: '*/5 * * * *'
+  
   workflow_dispatch:
 jobs:
   send-test-email:
