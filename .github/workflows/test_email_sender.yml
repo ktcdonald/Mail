@@ -22,7 +22,7 @@ jobs:
         TO_EMAIL: ${{ secrets.TO_EMAIL }}
       run: |
         # 動態生成 config
-        cat > test_data/config.json << EOF
+        cat > config.json << EOF
         {
           "gmail_email": "$GMAIL_EMAIL",
           "app_password": "$APP_PASSWORD",
@@ -33,8 +33,8 @@ jobs:
         }
         EOF
         
-        python daily_sender.py --config test_data/config.json
+        python daily_sender.py --config config.json
         
     - name: 📊 Log Results
       if: always()
-      run: ls -la test_data/ && cat test_data/config.json
+      run: ls -la test_data/ && cat config.json
