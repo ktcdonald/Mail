@@ -1,40 +1,49 @@
 name: 🚀 Gmail Test Sender
 
 on:
-  workflow_dispatch:  # 只手動觸發
+  workflow_dispatch:  # 手動觸發
   
 jobs:
   send-test-email:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: 🐍 Setup Python
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      
+    - name: 🐍 Setup Python 3.11
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
-    
+        
     - name: 📤 Send Test Email
       env:
         GMAIL_EMAIL: ${{ secrets.GMAIL_EMAIL }}
         APP_PASSWORD: ${{ secrets.APP_PASSWORD }}
         TO_EMAIL: ${{ secrets.TO_EMAIL }}
       run: |
-        # 動態生成 config
-        cat > ./config.json << EOF
+        # ✅ 修正1: 生成 config.json（用你現有檔名 DailySender.py）
+        cat > config.json << 'EOF'
         {
-          "gmail_email": "$GMAIL_EMAIL",
-          "app_password": "$APP_PASSWORD",
-          "to_email": "$TO_EMAIL",
+          "gmail_email": "${{ secrets.GMAIL_EMAIL }}",
+          "app_password": "${{ secrets.APP_PASSWORD }}",
+          "to_email": "${{ secrets.TO_EMAIL }}",
           "bcc_list": [],
           "subject": "🧪 GitHub Actions Test - $(date +%Y%m%d-%H%M)",
-          "html_content": "<h2>✅ Auto Test Success!</h2><p>Time: $(date)</p>"
+          "html_content": "<h2>✅ ktcdonald123 Auto Test Success!</h2><p>From: ktcdonald123@gmail.com<br>Time: $(date)<br>Server: GitHub Actions</p>"
         }
         EOF
         
-        python daily_sender.py --config ./config.json
+        # ✅ 修正2: 用正確檔名（你截圖顯示 DailySender.py）
+        python DailySender.py --config config.json
         
-    - name: 📊 Log Results
+        echo "✅ Config generated:"
+        cat config.json
+        
+    - name: 📊 Final Status
       if: always()
-      run: ls -la test_data/ && cat config.json
+      run: |
+        echo "📁 All files:"
+        ls -la
+        echo "📧 Config content:"
+        cat config.json || echo "Config not found"
